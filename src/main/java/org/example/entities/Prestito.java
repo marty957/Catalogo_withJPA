@@ -22,7 +22,7 @@ public class Prestito {
 
     @ManyToMany
     @JoinTable(
-            name = "prestiti_utenti",
+            name = "prestiti_pubblicazioni",
             joinColumns = @JoinColumn(name = "prestito_id"),
             inverseJoinColumns = @JoinColumn(name = "pubblicazione_id")
     )
