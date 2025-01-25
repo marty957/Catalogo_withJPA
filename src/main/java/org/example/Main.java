@@ -50,6 +50,10 @@ public class Main {
         Rivista r4= new Rivista("Humanitas",2006,62,Periodicita.MENSILE);
         Rivista r5= new Rivista("Newton",1956,96,Periodicita.ANNUALE);
         Rivista r6 =new Rivista("Giornale di Matematiche",1965,87,Periodicita.ANNUALE);
+        Rivista r7=new Rivista("giornale",2015,29,Periodicita.SETTIMANALE);
+
+        List<Pubblicazione> catalogo=new ArrayList<>();
+        catalogo.addAll(Arrays.asList(l1,l2,l3,l4,l5,l6,l7,l8,r1,r2,r3,r4,r5,r6,r7));
 
         //Utenti:
         Utente u1=new Utente(faker.name().firstName(),faker.name().lastName(),
@@ -75,29 +79,34 @@ public class Main {
         pubblicazioniPrestate4.addAll(Arrays.asList(r6,l7,r4));
 
         //salvataggio pubblicazioni
-        pubblicazioneDao.save(l1);
-        pubblicazioneDao.save(l2);
-        pubblicazioneDao.save(l3);
-        pubblicazioneDao.save(l4);
-        pubblicazioneDao.save(l5);
-        pubblicazioneDao.save(l6);
-        pubblicazioneDao.save(l7);
-        pubblicazioneDao.save(l8);
-        pubblicazioneDao.save(r1);
-        pubblicazioneDao.save(r2);
-        pubblicazioneDao.save(r3);
-        pubblicazioneDao.save(r4);
-        pubblicazioneDao.save(r5);
-        pubblicazioneDao.save(r6);
+//        pubblicazioneDao.save(l1);
+//        pubblicazioneDao.save(l2);
+//        pubblicazioneDao.save(l3);
+//        pubblicazioneDao.save(l4);
+//        pubblicazioneDao.save(l5);
+//        pubblicazioneDao.save(l6);
+//        pubblicazioneDao.save(l7);
+//        pubblicazioneDao.save(l8);
+//        pubblicazioneDao.save(r1);
+//        pubblicazioneDao.save(r2);
+//        pubblicazioneDao.save(r3);
+//        pubblicazioneDao.save(r4);
+//        pubblicazioneDao.save(r5);
+//        pubblicazioneDao.save(r6);
+//        pubblicazioneDao.save(r7);
+//        pubblicazioneDao.delete(r7.getIsbn());
+
+
+
 
 
         //salvataggio utenti
 
-        utenteDao.save(u1);
-        utenteDao.save(u2);
-        utenteDao.save(u3);
-        utenteDao.save(u4);
-        utenteDao.save(u5);
+//        utenteDao.save(u1);
+//        utenteDao.save(u2);
+//        utenteDao.save(u3);
+//        utenteDao.save(u4);
+//        utenteDao.save(u5);
 
         //Prestiti creazione:
 
@@ -114,13 +123,25 @@ public class Main {
 
 
         //salvataggio prestiti:
-        prestitoDAO.save(p1);
-        prestitoDAO.save(p2);
-        prestitoDAO.save(p3);
-        prestitoDAO.save(p4);
-        prestitoDAO.save(p5);
+//        prestitoDAO.save(p1);
+//        prestitoDAO.save(p2);
+//        prestitoDAO.save(p3);
+//        prestitoDAO.save(p4);
+//        prestitoDAO.save(p5);
 
 
+
+        List<Pubblicazione> ricercaPerAnno=  pubblicazioneDao.trovaPerAnnoPub(2005);
+        ricercaPerAnno.forEach(System.out::println);
+
+        List<Pubblicazione> ricercaPerAutore=pubblicazioneDao.trovaPerAutore("Tolkien");
+        ricercaPerAutore.forEach(System.out::println);
+
+        List<Pubblicazione> ricercaPerTitolo=pubblicazioneDao.trovaPerTitolo("A");
+        ricercaPerTitolo.forEach(System.out::println);
+
+        List<Prestito> ricercaPrestitiScaduti=prestitoDAO.prestitoScaduto();
+        ricercaPrestitiScaduti.forEach(System.out::println);
 
         emf.close();
         em.close();

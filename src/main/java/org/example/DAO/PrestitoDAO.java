@@ -3,6 +3,8 @@ package org.example.DAO;
 import org.example.entities.Prestito;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.List;
 
 public class PrestitoDAO {
     private EntityManager em;
@@ -26,5 +28,10 @@ public class PrestitoDAO {
         em.getTransaction().begin();
         em.remove(p);
         em.getTransaction().commit();
+    }
+
+    public List<Prestito> prestitoScaduto(){
+        Query q = em.createNamedQuery("Prestito.prestitoScaduto");
+        return q.getResultList();
     }
 }

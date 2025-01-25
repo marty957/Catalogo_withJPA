@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NamedQuery(name = "Prestito.prestitoScaduto",query = "SELECT p FROM Prestito p " +
+        "WHERE p.restituzionePrevista < CURRENT_DATE AND p.restituzioneEffettiva IS NULL")
 public class Prestito {
 
     @Id
@@ -95,7 +97,7 @@ public class Prestito {
                 ", inizioPrestito=" + inizioPrestito +
                 ", restituzionePrevista=" + restituzionePrevista +
                 ", restituzioneEffettiva=" + restituzioneEffettiva +
-                ", utente=" + utente +
+                ", utente=" +  (utente!=null? utente.getNome()+utente.getCognome():"N/A")+
                 ", listaPubblicazioni=" + listaPubblicazioni +
                 '}';
     }
