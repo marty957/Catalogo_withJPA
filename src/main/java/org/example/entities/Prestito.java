@@ -8,6 +8,9 @@ import java.util.List;
 @Entity
 @NamedQuery(name = "Prestito.prestitoScaduto",query = "SELECT p FROM Prestito p " +
         "WHERE p.restituzionePrevista < CURRENT_DATE AND p.restituzioneEffettiva IS NULL")
+@NamedQuery(name = "Prestito.ricercaPrestitoPerTessera", query = "SELECT p FROM Prestito p "+
+             "JOIN Utente u ON u.numeroTessera=:tessera "+
+             "WHERE p.restituzioneEffettiva IS NULL")
 public class Prestito {
 
     @Id

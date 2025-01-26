@@ -6,11 +6,13 @@ import org.example.DAO.PubblicazioneDao;
 import org.example.DAO.UtenteDao;
 import org.example.Enumeration.GenereLetterario;
 import org.example.Enumeration.Periodicita;
+import org.example.Excpetion.PersistenzaDati;
 import org.example.entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,12 +26,16 @@ public class Main {
     private static EntityManager em = emf.createEntityManager();
 
 
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws Exception {
         //settings di partenza
         Faker faker = new Faker(new Locale("it"));
         PubblicazioneDao pubblicazioneDao=new PubblicazioneDao(em);
         PrestitoDAO prestitoDAO=new PrestitoDAO(em);
         UtenteDao utenteDao=new UtenteDao(em);
+
+        //!!!!!!!!!!!!!!!!!!!!!!!!!
+        //https://drawsql.app/teams/epicode-22/diagrams/catalogo
+        // link per il diagramma!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         //creazione dati per DB
 
@@ -79,35 +85,49 @@ public class Main {
         pubblicazioniPrestate4.addAll(Arrays.asList(r6,l7,r4));
 
         //salvataggio pubblicazioni
-//        pubblicazioneDao.save(l1);
-//        pubblicazioneDao.save(l2);
-//        pubblicazioneDao.save(l3);
-//        pubblicazioneDao.save(l4);
-//        pubblicazioneDao.save(l5);
-//        pubblicazioneDao.save(l6);
-//        pubblicazioneDao.save(l7);
-//        pubblicazioneDao.save(l8);
-//        pubblicazioneDao.save(r1);
-//        pubblicazioneDao.save(r2);
-//        pubblicazioneDao.save(r3);
-//        pubblicazioneDao.save(r4);
-//        pubblicazioneDao.save(r5);
-//        pubblicazioneDao.save(r6);
-//        pubblicazioneDao.save(r7);
-//        pubblicazioneDao.delete(r7.getIsbn());
+
+        try {
+            pubblicazioneDao.save(l1);
+            pubblicazioneDao.save(l2);
+            pubblicazioneDao.save(l3);
+            pubblicazioneDao.save(l4);
+            pubblicazioneDao.save(l5);
+            pubblicazioneDao.save(l6);
+            pubblicazioneDao.save(l7);
+            pubblicazioneDao.save(l8);
+            pubblicazioneDao.save(r1);
+            pubblicazioneDao.save(r2);
+            pubblicazioneDao.save(r3);
+            pubblicazioneDao.save(r4);
+            pubblicazioneDao.save(r5);
+            pubblicazioneDao.save(r6);
+            pubblicazioneDao.save(r7);
+
+        }catch (PersistenzaDati e)
+        {
+            throw new Exception("Errore nella persistenza dei dati "+e.getMessage());
+        }
+        pubblicazioneDao.delete(r7.getIsbn());
 
 
 
 
 
         //salvataggio utenti
+      try {
 
-//        utenteDao.save(u1);
-//        utenteDao.save(u2);
-//        utenteDao.save(u3);
-//        utenteDao.save(u4);
-//        utenteDao.save(u5);
+          utenteDao.save(u1);
+          utenteDao.save(u2);
+          utenteDao.save(u3);
+          utenteDao.save(u4);
+          utenteDao.save(u5);
+      }catch (PersistenceException e)
+      {
+          throw new Exception("non puoi inserire lo stesso numero di tessera per due utenti diversi");
 
+      }catch (Exception e){
+          throw new Exception("Errore " + e.getMessage());
+      }
         //Prestiti creazione:
 
         Prestito p1=new Prestito(LocalDate.of(2024,10,14),
@@ -123,11 +143,15 @@ public class Main {
 
 
         //salvataggio prestiti:
-//        prestitoDAO.save(p1);
-//        prestitoDAO.save(p2);
-//        prestitoDAO.save(p3);
-//        prestitoDAO.save(p4);
-//        prestitoDAO.save(p5);
+        try {
+        prestitoDAO.save(p1);
+        prestitoDAO.save(p2);
+        prestitoDAO.save(p3);
+        prestitoDAO.save(p4);
+        prestitoDAO.save(p5);
+        }catch (Exception e){
+            throw new Exception("Errore" + e.getMessage());
+        }
 
 
 
@@ -142,6 +166,9 @@ public class Main {
 
         List<Prestito> ricercaPrestitiScaduti=prestitoDAO.prestitoScaduto();
         ricercaPrestitiScaduti.forEach(System.out::println);
+
+        List<Prestito> ricercaPrestitoPerTessera=prestitoDAO.ricercaPrestitoPerTessera("AA004");
+        ricercaPrestitoPerTessera.forEach(System.out::println);
 
         emf.close();
         em.close();

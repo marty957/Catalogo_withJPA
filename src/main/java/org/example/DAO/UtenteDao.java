@@ -1,8 +1,10 @@
 package org.example.DAO;
 
+import org.example.entities.Prestito;
 import org.example.entities.Utente;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public class UtenteDao {
     private EntityManager em;
@@ -26,4 +28,5 @@ public class UtenteDao {
         em.remove(u);
         em.getTransaction().commit();
     }
+
 }
